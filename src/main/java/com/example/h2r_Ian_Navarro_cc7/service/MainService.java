@@ -132,7 +132,7 @@ Guardar los cambios. == ya
         List<Pedido> pedidosProductoPendientes = pedidoRepo.findByProductoIdAndEstado(
                 producto.getId(), PedidoEstado.PENDIENTE
         );
-        
+
         if (pedidosProductoPendientes.size() > 0){
             throw new CustomException("El producto tiene pedidos pendientes");
         }
@@ -173,6 +173,21 @@ Realizar todos los cambios mediante una operación transaccional.
 
         return pedidosProducto.size();
 
+    }
+
+/*
+consultar detalle de pedido - 5 puntos
+Recibir el ID del pedido.
+Validar que exista.
+Devolver sus datos y la información básica del producto asociado.
+ */
+
+    public String consultarPedido(Long id){
+        Pedido pedido = pedidoRepo.findById(id).orElseThrow(()->
+                new CustomException("EL pedido no existe")
+        );
+
+        return pedido.toString();
     }
 }
 

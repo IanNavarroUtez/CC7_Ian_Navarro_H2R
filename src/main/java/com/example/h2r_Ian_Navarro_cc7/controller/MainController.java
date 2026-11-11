@@ -43,5 +43,10 @@ public class MainController {
         return ResponseEntity.ok(servicio.cancelarTodosPedidosDeProducto(id));
     }
 
+    @GetMapping("/consultarPedido/{id}")
+    public ResponseEntity<String> consultarPedido(@PathVariable Long id){
+        return ResponseEntity.ok(servicio.consultarPedido(id));
+    }
+
 
 }
