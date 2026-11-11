@@ -120,7 +120,7 @@ Guardar los cambios. == ya
 desactivar producto - 10 puntos
 Recibir el ID del producto. == No dto
 Validar que exista. == ya
-No permitir desactivar un producto que tenga pedidos en estado PENDIENTE.
+No permitir desactivar un producto que tenga pedidos en estado PENDIENTE. == ya
 Cambiar su atributo activo a false. == ya
 Guardar los cambios. == ya
  */
@@ -128,6 +128,14 @@ Guardar los cambios. == ya
         Producto producto = productoRepo.findById(id).orElseThrow( ()->
                 new CustomException("El producto no existe")
         );
+
+        List<Pedido> pedidosProductoPendientes = pedidoRepo.findByProductoIdAndEstado(
+                producto.getId(), PedidoEstado.PENDIENTE
+        );
+        
+        if (pedidosProductoPendientes.size() > 0){
+            throw new CustomException("El producto tiene pedidos pendientes");
+        }
 
 
         producto.setActivo(false);
