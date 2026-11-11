@@ -38,5 +38,10 @@ public class MainController {
         return ResponseEntity.ok(servicio.desactivarProducto(id));
     }
 
+    @PatchMapping("/cancelarTodosDeProducto/{id}")
+    public ResponseEntity<Integer> cancelarTodsDeProducto(@PathVariable Long id){
+        return ResponseEntity.ok(servicio.cancelarTodosPedidosDeProducto(id));
+    }
+
 
 }

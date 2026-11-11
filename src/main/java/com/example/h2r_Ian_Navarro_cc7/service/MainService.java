@@ -137,26 +137,35 @@ Guardar los cambios. == ya
 
 
 /*
-repo
-List<Reservacion> findBySalaIdAndEstado(Long salaId, EstadoReservacion estado);
-
-service
-List<Reservacion> activas = reservacionRepository.findBySalaIdAndEstado(salaId, EstadoReservacion.ACTIVA);
-    for (Reservacion reservacion : activas) {
-        reservacion.setEstado(EstadoReservacion.CANCELADA);
-    }
-    reservacionRepository.saveAll(activas);
 Cancelar todos los pedidos pendientes  de un producto - 20 puntos
-Recibir el ID del producto.
-Validar que el producto exista.
-Buscar todos sus pedidos en estado PENDIENTE.
-Cambiar cada pedido a CANCELADO.
-Devolver al stock la cantidad correspondiente a cada pedido.
+Recibir el ID del producto. == no dto
+Validar que el producto exista. == ya
+Buscar todos sus pedidos en estado PENDIENTE. == ??
+Cambiar cada pedido a CANCELADO. == ya
+Devolver al stock la cantidad correspondiente a cada pedido. == ya
 Conservar los registros históricos.
 Realizar todos los cambios mediante una operación transaccional.
  */
 
-    //public Integer cancelarTodos(Long id)
+    @Transactional
+    public Integer cancelarTodosPedidosDeProducto(Long productoId){
+        Producto producto = productoRepo.findById(productoId).orElseThrow(()->
+                new CustomException("El producto no existe")
+        );
+
+        List<Pedido> pedidosProducto = pedidoRepo.findByProductoIdAndEstado(producto.getId(), PedidoEstado.PENDIENTE);
+
+        for (Pedido pedido : pedidosProducto){
+            pedido.setEstado(PedidoEstado.CANCELADO);
+            producto.setStock(producto.getStock() + pedido.getCantidad());
+        }
+        pedidoRepo.saveAll(pedidosProducto);
+
+        productoRepo.save(producto);
+
+        return pedidosProducto.size();
+
+    }
 }
 
 
