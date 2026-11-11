@@ -22,5 +22,10 @@ public class MainController {
         return ResponseEntity.ok(servicio.crearPedido(dto));
     }
 
+    @PatchMapping("/cancelarPedido/{id}")
+    public ResponseEntity<Pedido> cancelarPedido(@PathVariable Long id){
+        return ResponseEntity.ok(servicio.cancelarPedido(id));
+    }
+
 
 }

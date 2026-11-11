@@ -60,4 +60,58 @@ Guardar los cambios en la base de datos.
 
         return pedido;
     }
+
+/*
+Cancelar pedido — 20 puntos
+Recibir el ID del pedido. == no dto
+Validar que el pedido exista. == ya
+Permitir cancelar únicamente pedidos en estado PENDIENTE.
+Cambiar el estado a CANCELADO. == ya
+Devolver al stock del producto la cantidad correspondiente. == ya
+Guardar los cambios.
+No eliminar físicamente el pedido.
+ */
+    @Transactional
+    public Pedido cancelarPedido(Long id){
+        Pedido pedido = pedidoRepo.findById(id).orElseThrow(()->
+            new CustomException("El pedido no existe")
+            );
+        if (pedido.getEstado() != PedidoEstado.PENDIENTE){
+            throw new CustomException("Solo pueden cancelarse pedidos pendientes");
+        }
+
+        Producto producto = pedido.getProducto();
+
+        producto.setStock(producto.getStock() + pedido.getCantidad());
+
+        productoRepo.save(producto);
+        pedidoRepo.save(pedido);
+
+        return pedido;
+    }
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
