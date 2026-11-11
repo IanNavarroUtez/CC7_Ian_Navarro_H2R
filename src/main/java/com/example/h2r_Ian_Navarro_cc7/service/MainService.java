@@ -90,7 +90,29 @@ No eliminar físicamente el pedido.
         return pedido;
     }
 
+/*
+Procesar pedido - 10 puntos
+Recibir el ID del pedido. == ya
+Validar que exista == ya
+Permitir procesar únicamente pedidos en estado PENDIENTE. == ya
+Cambiar su estado a PROCESADO. == ya
+Guardar los cambios. == ya
+ */
 
+    public Pedido procesarPedido(Long id){
+        Pedido pedido = pedidoRepo.findById(id).orElseThrow(()->
+                new CustomException("El pedido no existe")
+                );
+
+        if (pedido.getEstado() != PedidoEstado.PENDIENTE){
+            throw new CustomException("El pedido no esta pendiente");
+        }
+
+        pedido.setEstado(PedidoEstado.PROCESADO);
+
+        pedidoRepo.save(pedido);
+        return pedido;
+    }
 }
 
 
