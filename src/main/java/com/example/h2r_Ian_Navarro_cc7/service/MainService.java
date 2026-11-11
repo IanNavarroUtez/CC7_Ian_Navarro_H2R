@@ -10,6 +10,8 @@ import com.example.h2r_Ian_Navarro_cc7.repos.ProductoRepo;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class MainService {
     private final PedidoRepo pedidoRepo;
@@ -113,6 +115,48 @@ Guardar los cambios. == ya
         pedidoRepo.save(pedido);
         return pedido;
     }
+
+/*
+desactivar producto - 10 puntos
+Recibir el ID del producto. == No dto
+Validar que exista. == ya
+No permitir desactivar un producto que tenga pedidos en estado PENDIENTE.
+Cambiar su atributo activo a false. == ya
+Guardar los cambios. == ya
+ */
+    public Producto desactivarProducto(Long id){
+        Producto producto = productoRepo.findById(id).orElseThrow( ()->
+                new CustomException("El producto no existe")
+        );
+
+
+        producto.setActivo(false);
+        productoRepo.save(producto);
+        return producto;
+    }
+
+
+/*
+repo
+List<Reservacion> findBySalaIdAndEstado(Long salaId, EstadoReservacion estado);
+
+service
+List<Reservacion> activas = reservacionRepository.findBySalaIdAndEstado(salaId, EstadoReservacion.ACTIVA);
+    for (Reservacion reservacion : activas) {
+        reservacion.setEstado(EstadoReservacion.CANCELADA);
+    }
+    reservacionRepository.saveAll(activas);
+Cancelar todos los pedidos pendientes  de un producto - 20 puntos
+Recibir el ID del producto.
+Validar que el producto exista.
+Buscar todos sus pedidos en estado PENDIENTE.
+Cambiar cada pedido a CANCELADO.
+Devolver al stock la cantidad correspondiente a cada pedido.
+Conservar los registros históricos.
+Realizar todos los cambios mediante una operación transaccional.
+ */
+
+    //public Integer cancelarTodos(Long id)
 }
 
 

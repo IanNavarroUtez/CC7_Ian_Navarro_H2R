@@ -2,6 +2,7 @@ package com.example.h2r_Ian_Navarro_cc7.controller;
 
 import com.example.h2r_Ian_Navarro_cc7.dtos.CrearPedidoDTO;
 import com.example.h2r_Ian_Navarro_cc7.model.Pedido;
+import com.example.h2r_Ian_Navarro_cc7.model.Producto;
 import com.example.h2r_Ian_Navarro_cc7.service.MainService;
 import com.sun.tools.javac.Main;
 import jakarta.validation.Valid;
@@ -30,6 +31,11 @@ public class MainController {
     @PatchMapping("/procesarPedido/{id}")
     public ResponseEntity<Pedido> procesarPedido(@PathVariable Long id){
         return  ResponseEntity.ok(servicio.procesarPedido(id));
+    }
+
+    @PatchMapping("/desactivarProducto/{id}")
+    public ResponseEntity<Producto> desactivarProducto(@PathVariable Long id){
+        return ResponseEntity.ok(servicio.desactivarProducto(id));
     }
 
 
